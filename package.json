@@ -3,9 +3,15 @@
    "version": "0.0.0",
    "private": true,
    "scripts": {
-      "start:dev": "nodemon",
-      "build": "rimraf ./build && tsc",
-      "start": "npm run build && node build/index.js"
+      "dev": "concurrently \"nodemon\" \"npm run client:watch\"",
+      "start:dev": "tsc && nodemon",
+      "client:start": "npm run build && node build/index.js",
+      "client:dev": "npm run client:development",
+      "client:development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+      "client:watch": "npm run client:development -- --watch",
+      "client:hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+      "client:prod": "npm run production",
+      "client:production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
    },
    "dependencies": {
       "cookie-parser": "~1.4.4",
@@ -22,9 +28,16 @@
    "devDependencies": {
       "@types/express": "^4.17.6",
       "@types/node": "^8.0.29",
+      "concurrently": "^5.2.0",
+      "cross-env": "^7.0.2",
+      "laravel-mix": "^5.0.4",
+      "node-sass": "^4.14.1",
       "nodemon": "^2.0.4",
+      "resolve-url-loader": "^3.1.0",
       "rimraf": "^3.0.2",
+      "sass-loader": "^8.0.2",
       "ts-node": "^8.10.1",
-      "typescript": "^3.9.3"
+      "typescript": "^3.9.3",
+      "vue-template-compiler": "^2.6.11"
    }
 }
